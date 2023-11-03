@@ -1,15 +1,21 @@
 import { Box, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from '@mui/material'
-import React from 'react'
+import { useState } from 'react'
 import { useAccountContext } from '../context/AccountContext'
 import StarIcon from '@mui/icons-material/StarBorder';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
+import AddStarDialog from './AddStarDialog';
 
 export default function Admin() {
   const { participants } = useAccountContext();
-  const getStarsAndJars = useStarsAndJarsContext();
+  const { getStarsAndJars } = useStarsAndJarsContext();
+  const [ newStarInfo, setNewStarInfo ] = useState(null);
+
+  function closeAddStarDialog() {
+    setNewStarInfo(null);
+  }
 
   return (
     <div>
@@ -20,10 +26,12 @@ export default function Admin() {
           <>
             <ListSubheader>{participant.name}
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete">
+                  <IconButton edge="end" aria-label="delete"
+                              onClick={() => setNewStarInfo({participant, value: -1})}>
                     <RemoveIcon />
                   </IconButton>
-                  <IconButton edge="end" aria-label="delete" sx={{ml: 1}}>
+                  <IconButton edge="end" aria-label="add" sx={{ml: 1}}
+                              onClick={() => setNewStarInfo({participant, value: 1})}>
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -45,7 +53,7 @@ export default function Admin() {
       </List>
       </Box>
 
-
+      <AddStarDialog open={newStarInfo !== null} info={newStarInfo} onClose={closeAddStarDialog}/>
     </div>
   )
 }

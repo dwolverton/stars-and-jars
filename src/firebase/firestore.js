@@ -18,7 +18,6 @@ export function starsRef(accountId, participantId) {
 }
 
 export function recentStarsRef(accountId, participantId) {
-  console.log(accountId, participantId);
   return query(starsRef(accountId, participantId), orderBy("createdAt", "desc"), limit(10));
 }
 

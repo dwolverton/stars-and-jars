@@ -1,5 +1,5 @@
-import { onSnapshot } from "firebase/firestore";
-import { recentStarsRef } from "../firebase/firestore";
+import { onSnapshot, addDoc } from "firebase/firestore";
+import { recentStarsRef, starsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useAccountContext } from "./AccountContext";
 
@@ -37,9 +37,19 @@ export function StarsAndJarsContextProvider({children}) {
     return value[participantId] ?? BLANK_PARTICIPANT;
   }
 
+  function addStar(participantId, star) {
+    if (!account || !participantId) {
+      return;
+    }
+    addDoc(starsRef(account.id, participantId), star);
+  }
+
   console.log(value);
   return (
-    <StarsAndJarsContext.Provider value={getStarsAndJars}>{children}</StarsAndJarsContext.Provider>
+    <StarsAndJarsContext.Provider value={{
+      getStarsAndJars,
+      addStar
+    }}>{children}</StarsAndJarsContext.Provider>
   );
 }
 
