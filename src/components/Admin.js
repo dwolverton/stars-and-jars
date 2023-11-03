@@ -10,7 +10,7 @@ import AddStarDialog from './AddStarDialog';
 
 export default function Admin() {
   const { participants } = useAccountContext();
-  const { getStarsAndJars } = useStarsAndJarsContext();
+  const { getStarsAndJars, removeStar } = useStarsAndJarsContext();
   const [ newStarInfo, setNewStarInfo ] = useState(null);
 
   function closeAddStarDialog() {
@@ -38,7 +38,8 @@ export default function Admin() {
               </ListSubheader>
             {getStarsAndJars(participant.id).recentStars.map(star => (
               <ListItem secondaryAction={
-                <IconButton edge="end" aria-label="delete">
+                <IconButton edge="end" aria-label="delete"
+                            onClick={() => removeStar(participant.id, star.id)}>
                   <DeleteIcon />
                 </IconButton>
               }>

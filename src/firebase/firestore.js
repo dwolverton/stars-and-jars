@@ -17,6 +17,10 @@ export function starsRef(accountId, participantId) {
   return collection(db, "accounts", accountId, "participants", participantId, "stars");
 }
 
+export function starRef(accountId, participantId, starId) {
+  return doc(db, "accounts", accountId, "participants", participantId, "stars", starId);
+}
+
 export function recentStarsRef(accountId, participantId) {
   return query(starsRef(accountId, participantId), orderBy("createdAt", "desc"), limit(10));
 }

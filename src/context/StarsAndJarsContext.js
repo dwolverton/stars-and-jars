@@ -1,6 +1,6 @@
-import { onSnapshot, addDoc } from "firebase/firestore";
-import { recentStarsRef, starsRef } from "../firebase/firestore";
-import { createContext, useContext, useState, useEffect } from 'react';
+import { onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { recentStarsRef, starsRef, starRef } from "../firebase/firestore";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAccountContext } from "./AccountContext";
 
 const INITIAL_VALUE = {
@@ -37,18 +37,26 @@ export function StarsAndJarsContextProvider({children}) {
     return value[participantId] ?? BLANK_PARTICIPANT;
   }
 
-  function addStar(participantId, star) {
+  const addStar = useCallback(function addStar(participantId, star) {
     if (!account || !participantId) {
       return;
     }
     addDoc(starsRef(account.id, participantId), star);
-  }
+  }, [account])
 
-  console.log(value);
+  const removeStar = useCallback(function removeStar(participantId, starId) {
+    if (!account || !participantId || !starId) {
+      return;
+    }
+    deleteDoc(starRef(account.id, participantId, starId));
+  }, [account]);
+
+  useMemo(() => console.log(value), [value]);
   return (
     <StarsAndJarsContext.Provider value={{
       getStarsAndJars,
-      addStar
+      addStar,
+      removeStar
     }}>{children}</StarsAndJarsContext.Provider>
   );
 }
