@@ -1,5 +1,5 @@
 import { Box, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from '@mui/material'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAccountContext } from '../context/AccountContext'
 import StarIcon from '@mui/icons-material/StarBorder';
 import AddIcon from '@mui/icons-material/Add';
@@ -23,7 +23,7 @@ export default function Admin() {
       sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }} >
       <List>
         {Object.values(participants).map(participant => (
-          <>
+          <React.Fragment key={participant.id}>
             <ListSubheader>{participant.name}
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="delete"
@@ -37,7 +37,7 @@ export default function Admin() {
                 </ListItemSecondaryAction>
               </ListSubheader>
             {getStarsAndJars(participant.id).recentStars.map(star => (
-              <ListItem secondaryAction={
+              <ListItem key={star.id} secondaryAction={
                 <IconButton edge="end" aria-label="delete"
                             onClick={() => removeStar(participant.id, star.id)}>
                   <DeleteIcon />
@@ -49,7 +49,7 @@ export default function Admin() {
                 <ListItemText primary={star.label} />
               </ListItem>
             ))}
-          </>
+          </React.Fragment>
         ))}
       </List>
       </Box>

@@ -1,22 +1,23 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Admin from './components/Admin';
-import { AccountContextProvider } from './context/AccountContext';
-import { StarsAndJarsContextProvider } from './context/StarsAndJarsContext';
+import { useAccountContext } from './context/AccountContext';
+import { ParticipantHome } from './components/ParticipantHome';
 
 function App() {
+  const account = useAccountContext();
   return (
-    <AccountContextProvider>
-      <StarsAndJarsContextProvider>
-        <Router>
-          <div className="App">
-            <Routes>
-              <Route path="/" element={<Admin />} />
-            </Routes>
-          </div>
-        </Router>
-      </StarsAndJarsContextProvider>
-    </AccountContextProvider>
+    <Router>
+      <div className="App">
+        {account.participants.map(participant => (
+          <Link to={`/home/${participant.id}`}>{participant.name}</Link>
+        ))}
+        <Routes>
+          <Route path="/" element={<Admin />} />
+          <Route path="/home/:participantId" element={<ParticipantHome />}/>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

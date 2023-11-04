@@ -1,5 +1,5 @@
 import { onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
-import { recentStarsRef, starsRef, starRef } from "../firebase/firestore";
+import { recentStarsRef, starsRef, starRef, unjarredStarsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAccountContext } from "./AccountContext";
 
@@ -21,7 +21,8 @@ export function StarsAndJarsContextProvider({children}) {
       const unsubscribers = [];
       for (const participant of account.participants) {
         newValue[participant.id] = BLANK_PARTICIPANT;
-        unsubscribers.push(loadRecentStars(account.id, participant.id, setter(setValue, participant.id, "recentStars")));
+        unsubscribers.push(loadRecentStars(account.id, participant.id, setter(setValue, participant.id)));
+        unsubscribers.push(loadUnjarredStars(account.id, participant.id, participant.jarTypes, setter(setValue, participant.id)));
       }
       setValue(newValue);
 
@@ -65,15 +66,45 @@ export const useStarsAndJarsContext = () => useContext(StarsAndJarsContext);
 
 export default StarsAndJarsContext;
 
-function setter(setValue, participantId, prop) {
-  return newValue => {
-    setValue(prev => ({ ...prev, [participantId]: { ...prev[participantId], [prop]: newValue}}));
+function setter(setValue, participantId) {
+  return newValues => {
+    setValue(prev => ({ ...prev, [participantId]: { ...prev[participantId], ...newValues}}));
   }
 }
 
 function loadRecentStars(accountId, participantId, set) {
   return onSnapshot(recentStarsRef(accountId, participantId), (querySnapshot) => {
-    set(docsToObjs(querySnapshot));
+    set({ recentStars: docsToObjs(querySnapshot) });
+  });
+}
+
+function loadUnjarredStars(accountId, participantId, jarTypes, set) {
+  return onSnapshot(unjarredStarsRef(accountId, participantId), (querySnapshot) => {
+    const stars = docsToObjs(querySnapshot);
+    const jarStats = {};
+    for (const jarType of jarTypes) {
+      const jarTypeId = jarType.id;
+      const stats = {
+        unjarred: 0,
+        collected: 0,
+        uncollected: 0,
+      }
+      jarStats[jarTypeId] = stats;
+      for (const star of stars) {
+        if (star.jarType === jarTypeId) {
+          stats.unjarred++;
+          if (!star.collected) {
+            stats.uncollected++;
+          }
+        }
+      }
+      stats.collected = stats.unjarred - stats.uncollected;
+    }
+
+    set({
+      unjarredStars: stars,
+      jarStats
+    });
   });
 }
 

@@ -1,4 +1,4 @@
-import { collection, doc, query, orderBy, limit } from "firebase/firestore"; 
+import { collection, doc, query, where, orderBy, limit } from "firebase/firestore"; 
 import { db } from './index';
 
 export function participantsRef(accountId) {
@@ -23,6 +23,10 @@ export function starRef(accountId, participantId, starId) {
 
 export function recentStarsRef(accountId, participantId) {
   return query(starsRef(accountId, participantId), orderBy("createdAt", "desc"), limit(10));
+}
+
+export function unjarredStarsRef(accountId, participantId) {
+  return query(starsRef(accountId, participantId), where("jar", "==", null));
 }
 
 export function jarsRef(accountId, participantId) {

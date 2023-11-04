@@ -7,11 +7,17 @@ import '@fontsource/roboto/700.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AccountContextProvider } from './context/AccountContext';
+import { StarsAndJarsContextProvider } from './context/StarsAndJarsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AccountContextProvider>
+      <StarsAndJarsContextProvider>
+        <App />
+      </StarsAndJarsContextProvider>
+    </AccountContextProvider>
   </React.StrictMode>
 );
 

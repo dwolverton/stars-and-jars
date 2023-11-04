@@ -5,3 +5,8 @@ https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2
 
 ### Phase 2
 * choose date for star
+
+
+### Attributions
+https://sayitwithsimplicity.com/free-mason-jar-svg-file/
+https://www.iconpacks.net/free-icon/star-2768.html
