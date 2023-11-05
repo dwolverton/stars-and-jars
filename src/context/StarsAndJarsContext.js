@@ -6,7 +6,14 @@ import { useAccountContext } from "./AccountContext";
 const INITIAL_VALUE = {
 }
 const BLANK_PARTICIPANT = {
-  recentStars: []
+  recentStars: [],
+  unjarredStars: [],
+  jarStats: {}
+}
+const BLANK_STATS = {
+  unjarred: 0,
+  collected: 0,
+  uncollected: 0
 }
 
 const StarsAndJarsContext = createContext(INITIAL_VALUE);
@@ -38,6 +45,15 @@ export function StarsAndJarsContextProvider({children}) {
     return value[participantId] ?? BLANK_PARTICIPANT;
   }
 
+  function getJarStats(participantId, jarType) {
+    const starsAndJars = getStarsAndJars(participantId);
+    if (!starsAndJars) {
+      return BLANK_STATS;
+    } 
+
+    return starsAndJars.jarStats[jarType] ?? BLANK_STATS;
+  }
+
   const addStar = useCallback(function addStar(participantId, star) {
     if (!account || !participantId) {
       return;
@@ -56,6 +72,7 @@ export function StarsAndJarsContextProvider({children}) {
   return (
     <StarsAndJarsContext.Provider value={{
       getStarsAndJars,
+      getJarStats,
       addStar,
       removeStar
     }}>{children}</StarsAndJarsContext.Provider>

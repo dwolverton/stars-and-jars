@@ -2,8 +2,8 @@
   {
     "name": "Reniah",
     "jarTypes": [
-      { "id": 1, "name": "General", "color": "*rainbow" },
-      { "id": 2, "name": "Sleep", "color": "darkturquoise" }
+      { "id": 1, "name": "General", "color": "hotpink", "size": 30 },
+      { "id": 2, "name": "Sleep", "color": "deepskyblue", "size": 10 }
     ],
     "labels": [
       { "text": "Morning", "jarType": 1 },
@@ -16,8 +16,8 @@
   {
     "name": "Ziyar",
     "jarTypes": [
-      { "id": 1, "name": "General", "color": "*rainbow" },
-      { "id": 2, "name": "Sleep", "color": "darkturquoise" }
+      { "id": 1, "name": "General", "color": "hotpink", "size": 30 },
+      { "id": 2, "name": "Sleep", "color": "deepskyblue", "size": 10 }
     ],
     "labels": [
       { "text": "Morning", "jarType": 1 },

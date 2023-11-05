@@ -19,8 +19,8 @@ export default function Admin() {
 
   return (
     <div>
-      <Box
-      sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }} >
+      {/* <Box
+      sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }} > */}
       <List>
         {Object.values(participants).map(participant => (
           <React.Fragment key={participant.id}>
@@ -52,7 +52,7 @@ export default function Admin() {
           </React.Fragment>
         ))}
       </List>
-      </Box>
+      {/* </Box> */}
 
       <AddStarDialog open={newStarInfo !== null} info={newStarInfo} onClose={closeAddStarDialog}/>
     </div>
