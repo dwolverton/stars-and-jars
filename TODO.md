@@ -1,10 +1,15 @@
 https://firebase.google.com/docs/firestore/quickstart#web-modular-api_2
 https://mui.com/material-ui/react-dialog/
-https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2Faccounts~2FOgff6oAlqrQ5nRPO4dJG~2Fparticipants~2FkO6hjNzIqCjwbtOBdlOM~2Fjars~2FrjSid0XxbuTHjUP1aWOP
+https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2Faccounts~2FOgff6oAlqrQ5nRPO4dJG~2Fparticipants
 
 
 ### Phase 2
+* lock jar collection
+* See jars & prizes
+* jar outline
+* show jar type & date on admin, and whether collected
 * choose date for star
+* rainbow color
 
 
 ### Attributions

@@ -2,6 +2,7 @@ import { onSnapshot, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { recentStarsRef, starsRef, starRef, unjarredStarsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAccountContext } from "./AccountContext";
+import { repoCollectJar } from "../firebase/firebaseRepo";
 
 const INITIAL_VALUE = {
 }
@@ -41,9 +42,9 @@ export function StarsAndJarsContextProvider({children}) {
     }
   }, [account]);
 
-  function getStarsAndJars(participantId) {
+  const getStarsAndJars = useCallback(function getStarsAndJars(participantId) {
     return value[participantId] ?? BLANK_PARTICIPANT;
-  }
+  }, [ value ]);
 
   function getJarStats(participantId, jarType) {
     const starsAndJars = getStarsAndJars(participantId);
@@ -75,6 +76,13 @@ export function StarsAndJarsContextProvider({children}) {
     updateDoc(starRef(account.id, participantId, starId), {collected: true})
   }, [account]);
 
+  const collectJar = useCallback(function collectStar(participantId, jarType) {
+    if (!account) {
+      return;
+    }
+    return repoCollectJar(account.id, participantId, jarType, getStarsAndJars(participantId).unjarredStars);
+  }, [account, getStarsAndJars]);
+
   useMemo(() => console.log(value), [value]);
   return (
     <StarsAndJarsContext.Provider value={{
@@ -82,7 +90,8 @@ export function StarsAndJarsContextProvider({children}) {
       getJarStats,
       addStar,
       removeStar,
-      collectStar
+      collectStar,
+      collectJar
     }}>{children}</StarsAndJarsContext.Provider>
   );
 }
@@ -117,9 +126,9 @@ function loadUnjarredStars(accountId, participantId, jarTypes, set) {
       jarStats[jarTypeId] = stats;
       for (const star of stars) {
         if (star.jarType === jarTypeId) {
-          stats.unjarred++;
+          stats.unjarred += star.value;
           if (!star.collected) {
-            stats.uncollected++;
+            stats.uncollected += star.value;
           }
         }
       }
