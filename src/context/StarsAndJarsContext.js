@@ -1,5 +1,5 @@
 import { onSnapshot, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
-import { recentStarsRef, starsRef, starRef, unjarredStarsRef } from "../firebase/firestore";
+import { recentStarsRef, starsRef, starRef, unjarredStarsRef, jarsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAccountContext } from "./AccountContext";
 import { repoCollectJar } from "../firebase/firebaseRepo";
@@ -9,7 +9,9 @@ const INITIAL_VALUE = {
 const BLANK_PARTICIPANT = {
   recentStars: [],
   unjarredStars: [],
-  jarStats: {}
+  jarStats: {},
+  jars: [],
+  unredeemedJars: []
 }
 const BLANK_STATS = {
   unjarred: 0,
@@ -29,8 +31,10 @@ export function StarsAndJarsContextProvider({children}) {
       const unsubscribers = [];
       for (const participant of account.participants) {
         newValue[participant.id] = BLANK_PARTICIPANT;
-        unsubscribers.push(loadRecentStars(account.id, participant.id, setter(setValue, participant.id)));
-        unsubscribers.push(loadUnjarredStars(account.id, participant.id, participant.jarTypes, setter(setValue, participant.id)));
+        const set = setter(setValue, participant.id);
+        unsubscribers.push(loadRecentStars(account.id, participant.id, set));
+        unsubscribers.push(loadUnjarredStars(account.id, participant.id, participant.jarTypes, set));
+        unsubscribers.push(loadJars(account.id, participant.id, set));
       }
       setValue(newValue);
 
@@ -139,6 +143,14 @@ function loadUnjarredStars(accountId, participantId, jarTypes, set) {
       unjarredStars: stars,
       jarStats
     });
+  });
+}
+
+function loadJars(accountId, participantId, set) {
+  return onSnapshot(jarsRef(accountId, participantId), (querySnapshot) => {
+    const jars = docsToObjs(querySnapshot);
+    const unredeemedJars = jars.filter(jar => !jar.redeemedAt);
+    set({ jars, unredeemedJars });
   });
 }
 

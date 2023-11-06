@@ -6,6 +6,7 @@ import starSvg from "../images/star.svg";
 import { useEffect, useState } from "react";
 import "./ParticipantHome.css";
 import { useStarsAndJarsContext } from "../context/StarsAndJarsContext";
+import TrophyIcon from '@mui/icons-material/EmojiEventsOutlined';
 
 export function ParticipantHome() {
   const account = useAccountContext();
@@ -24,7 +25,7 @@ export function ParticipantHome() {
   }
 
   const jarStats = getJarStats(participantId, selectedJar.id)
-  const jarFill = jarStats ? jarStats.collected / selectedJar.size * 100 : 0;
+  const jarFill = (jarStats && jarStats.collected > 0) ? jarStats.collected / selectedJar.size * 100 : 0;
   const jarFull = (jarStats && selectedJar.size) ? jarStats.collected >= selectedJar.size : false;
 
   let nextStar = null;
@@ -65,13 +66,17 @@ export function ParticipantHome() {
       </Stack>
       <BottomNavigation showLabels value={selectedJar} onChange={(e, newValue) => setSelectedJar(newValue)}>
         {participant.jarTypes.map(jarType => (
-          
-            <BottomNavigationAction key={jarType.id} value={jarType} label={jarType.name} icon={
-              <Badge color="primary" badgeContent={getJarStats(participantId, jarType.id).uncollected}>
-                <img src={jarSvg} height={24} alt="jar" style={{backgroundColor: jarType.color}}/>
-              </Badge>
-            } />
+          <BottomNavigationAction key={jarType.id} value={jarType} label={jarType.name} icon={
+            <Badge color="primary" badgeContent={getJarStats(participantId, jarType.id).uncollected}>
+              <img src={jarSvg} height={24} alt="jar" style={{backgroundColor: jarType.color}}/>
+            </Badge>
+          } />
         ))}
+        <BottomNavigationAction value="myJars" label="Prizes" icon={
+          <Badge color="primary" badgeContent={getStarsAndJars(participantId).unredeemedJars.length}>
+            <TrophyIcon />
+          </Badge>
+        } />
       </BottomNavigation>
     </div>
   );
