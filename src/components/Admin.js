@@ -1,4 +1,4 @@
-import { Box, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from '@mui/material'
+import { IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from '@mui/material'
 import React, { useState } from 'react'
 import { useAccountContext } from '../context/AccountContext'
 import StarIcon from '@mui/icons-material/StarBorder';
@@ -19,8 +19,6 @@ export default function Admin() {
 
   return (
     <div>
-      {/* <Box
-      sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }} > */}
       <List>
         {Object.values(participants).map(participant => (
           <React.Fragment key={participant.id}>
@@ -52,7 +50,6 @@ export default function Admin() {
           </React.Fragment>
         ))}
       </List>
-      {/* </Box> */}
 
       <AddStarDialog open={newStarInfo !== null} info={newStarInfo} onClose={closeAddStarDialog}/>
     </div>

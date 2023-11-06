@@ -33,9 +33,25 @@
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 18px;
-  font-family: 'Dancing Script', sans-serif;
+  font-family: 'Dancing Script', Roboto, sans-serif;
 }
 
 .jarStats-collected {
   font-size: 22px;
+}
+
+.nextStarContainer {
+  height: 88px;
+  font-family: 'Dancing Script', Roboto, sans-serif;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nextStar {
+  color: black;
+  text-transform: none;
+  font-family: 'Dancing Script', Roboto, sans-serif;
+  font-size: 20px;
 }

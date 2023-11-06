@@ -1,4 +1,4 @@
-import { onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { onSnapshot, addDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { recentStarsRef, starsRef, starRef, unjarredStarsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAccountContext } from "./AccountContext";
@@ -68,13 +68,21 @@ export function StarsAndJarsContextProvider({children}) {
     deleteDoc(starRef(account.id, participantId, starId));
   }, [account]);
 
+  const collectStar = useCallback(function collectStar(participantId, starId) {
+    if (!account || !participantId || !starId) {
+      return;
+    }
+    updateDoc(starRef(account.id, participantId, starId), {collected: true})
+  }, [account]);
+
   useMemo(() => console.log(value), [value]);
   return (
     <StarsAndJarsContext.Provider value={{
       getStarsAndJars,
       getJarStats,
       addStar,
-      removeStar
+      removeStar,
+      collectStar
     }}>{children}</StarsAndJarsContext.Provider>
   );
 }

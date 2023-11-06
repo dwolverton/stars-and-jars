@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Container maxWidth="sm">
+        <Container maxWidth="md" sx={{px: 0}}>
           <AppBar component="nav" position="static">
             <Toolbar>
               <Button to="/" sx={{ color: '#fff' }} component={NavLink}>Admin</Button>
@@ -19,7 +19,7 @@ function App() {
               ))}
             </Toolbar>
           </AppBar>
-          <Box component="main" sx={{ p: 3 }}>
+          <Box component="main" sx={{ p: 2 }}>
             <Routes>
               <Route path="/" element={<Admin />} />
               <Route path="/home/:participantId" element={<ParticipantHome />} />
