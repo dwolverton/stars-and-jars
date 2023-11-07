@@ -66,7 +66,7 @@ export function ParticipantHome() {
         </div>
         </ButtonBase>
       </Stack>
-      <BottomNavigation showLabels value={selectedJar} onChange={(e, newValue) => setSelectedJar(newValue)}>
+      <BottomNavigation showLabels value={selectedJar} onChange={(_e, newValue) => setSelectedJar(newValue)}>
         {participant.jarTypes.map(jarType => (
           <BottomNavigationAction key={jarType.id} value={jarType} label={jarType.name} icon={
             <Badge color="primary" badgeContent={getJarStats(participantId, jarType.id).uncollected}>
