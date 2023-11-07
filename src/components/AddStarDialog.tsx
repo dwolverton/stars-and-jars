@@ -1,4 +1,3 @@
-import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -7,18 +6,33 @@ import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import StarIcon from '@mui/icons-material/StarBorder';
-import { serverTimestamp } from 'firebase/firestore';
+import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
+import { Label, Participant } from '../model/Account';
+import Star from '../model/Star';
 
-const BLANK_INFO = {
+interface Props {
+  onClose: () => void;
+  info: NewStarInfo | null;
+  open: boolean;
+}
+
+export interface NewStarInfo {
+  participant: Participant;
+  value: number;
+}
+
+const BLANK_INFO: NewStarInfo = {
   participant: {
+    id: "",
     name: "",
-    labels: []
+    labels: [],
+    jarTypes: []
   },
   value: 1
 }
 
-function AddStarDialog({ onClose, info, open }) {
+function AddStarDialog({ onClose, info, open }: Props) {
   info = info ?? BLANK_INFO;
   const { participant, value } = info;
   const { addStar } = useStarsAndJarsContext();
@@ -27,14 +41,14 @@ function AddStarDialog({ onClose, info, open }) {
     onClose();
   };
 
-  const handleListItemClick = (label) => {
-    const star = {
+  const handleListItemClick = (label: Label) => {
+    const star: Star = {
       label: label.text,
       jarType: label.jarType,
       value: value,
       jar: null,
       collected: value <= 0,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp() as Timestamp
     }
     addStar(participant.id, star);
     onClose();
@@ -62,40 +76,3 @@ function AddStarDialog({ onClose, info, open }) {
 }
 
 export default AddStarDialog;
-
-// SimpleDialog.propTypes = {
-//   onClose: PropTypes.func.isRequired,
-//   open: PropTypes.bool.isRequired,
-//   selectedValue: PropTypes.string.isRequired,
-// };
-
-// function SimpleDialogDemo() {
-//   const [open, setOpen] = React.useState(false);
-//   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = (value) => {
-//     setOpen(false);
-//     setSelectedValue(value);
-//   };
-
-//   return (
-//     <div>
-//       <Typography variant="subtitle1" component="div">
-//         Selected: {selectedValue}
-//       </Typography>
-//       <br />
-//       <Button variant="outlined" onClick={handleClickOpen}>
-//         Open simple dialog
-//       </Button>
-//       <SimpleDialog
-//         selectedValue={selectedValue}
-//         open={open}
-//         onClose={handleClose}
-//       />
-//     </div>
-//   );
-// }

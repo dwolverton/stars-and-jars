@@ -1,23 +1,25 @@
 import { useParams } from "react-router-dom";
 import { useAccountContext } from "../context/AccountContext";
 import { Badge, BottomNavigation, BottomNavigationAction, Button, ButtonBase, Stack } from "@mui/material";
-import jarSvg from "../images/jar.svg";
-import starSvg from "../images/star.svg";
+import jarSvg from "../assets/jar.svg";
+import starSvg from "../assets/star.svg";
 import { useEffect, useState } from "react";
 import "./ParticipantHome.css";
 import { useStarsAndJarsContext } from "../context/StarsAndJarsContext";
 import TrophyIcon from '@mui/icons-material/EmojiEventsOutlined';
+import { BLANK_JAR_TYPE, JarType } from "../model/Account";
+import Star from "../model/Star";
 
 export function ParticipantHome() {
   const account = useAccountContext();
   const { getStarsAndJars, getJarStats, collectStar, collectJar } = useStarsAndJarsContext();
+  const [ selectedJar, setSelectedJar ] = useState<JarType>(BLANK_JAR_TYPE);
 
-  const { participantId } = useParams();
+  const { participantId = "" } = useParams();
   const participant = account.participantsById[participantId];
-  const [ selectedJar, setSelectedJar ] = useState({});
 
   useEffect(() => {
-    setSelectedJar(participant ? participant.jarTypes[0] : {});
+    setSelectedJar(participant ? participant.jarTypes[0] : BLANK_JAR_TYPE);
   }, [ participant ]);
 
   if (!participant) {
@@ -28,7 +30,7 @@ export function ParticipantHome() {
   const jarFill = (jarStats && jarStats.collected > 0) ? jarStats.collected / selectedJar.size * 100 : 0;
   const jarFull = (jarStats && selectedJar.size) ? jarStats.collected >= selectedJar.size : false;
 
-  let nextStar = null;
+  let nextStar: Star|null = null;
   if (jarStats.uncollected !== 0) {
     nextStar = getStarsAndJars(participantId).unjarredStars.find(star => star.jarType === selectedJar.id && !star.collected) ?? null;
   }
@@ -38,7 +40,7 @@ export function ParticipantHome() {
       <Stack sx={{alignItems: 'center', mb: 1}}>
         <div className="nextStarContainer">
           {nextStar ? (
-            <Button onClick={() => collectStar(participantId, nextStar.id)} disabled={jarFull} className="nextStarButton">
+            <Button onClick={() => collectStar(participantId, nextStar?.id!)} disabled={jarFull} className="nextStarButton">
               <Stack className="nextStar">
               <img src={starSvg} height={40} alt="star"/>
               {nextStar.label}

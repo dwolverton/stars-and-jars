@@ -1,8 +1,10 @@
 import { doc, serverTimestamp, writeBatch } from "firebase/firestore";
 import { jarsRef, starRef } from "./firestore";
 import { db } from ".";
+import { JarType } from "../model/Account";
+import Star from "../model/Star";
 
-export async function repoCollectJar(accountId, participantId, jarType, unjarredStars) {
+export async function repoCollectJar(accountId: string, participantId: string, jarType: JarType, unjarredStars: Star[]) {
   if (!accountId || !participantId || !jarType || !jarType.id) {
     return;
   }
@@ -13,7 +15,7 @@ export async function repoCollectJar(accountId, participantId, jarType, unjarred
     if (valueDiff !== 0) {
       return valueDiff;
     }
-    return a.createdAt - b.createdAt;
+    return Number(a.createdAt) - Number(b.createdAt);
   });
 
   const batch = writeBatch(db);
@@ -21,7 +23,7 @@ export async function repoCollectJar(accountId, participantId, jarType, unjarred
   let remaining = jarType.size;
   for (const star of stars) {
     remaining -= star.value;
-    batch.update(starRef(accountId, participantId, star.id), { jar: jar.id });
+    batch.update(starRef(accountId, participantId, star.id!), { jar: jar.id });
     if (remaining <= 0) {
       break;
     }

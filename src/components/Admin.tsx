@@ -6,12 +6,12 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
-import AddStarDialog from './AddStarDialog';
+import AddStarDialog, { NewStarInfo } from './AddStarDialog';
 
 export default function Admin() {
   const { participants } = useAccountContext();
   const { getStarsAndJars, removeStar } = useStarsAndJarsContext();
-  const [ newStarInfo, setNewStarInfo ] = useState(null);
+  const [ newStarInfo, setNewStarInfo ] = useState<NewStarInfo|null>(null);
 
   function closeAddStarDialog() {
     setNewStarInfo(null);
@@ -37,7 +37,7 @@ export default function Admin() {
             {getStarsAndJars(participant.id).recentStars.map(star => (
               <ListItem key={star.id} secondaryAction={
                 <IconButton edge="end" aria-label="delete"
-                            onClick={() => removeStar(participant.id, star.id)}>
+                            onClick={() => removeStar(participant.id, star.id!)}>
                   <DeleteIcon />
                 </IconButton>
               }>

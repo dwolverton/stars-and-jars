@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Container maxWidth="md" sx={{px: 0}}>
+        <Container maxWidth="sm" sx={{px: 0}}>
           <AppBar component="nav" position="static">
             <Toolbar>
               <Button to="/" sx={{ color: '#fff' }} component={NavLink}>Admin</Button>
