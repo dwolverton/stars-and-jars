@@ -42,16 +42,16 @@ export function ParticipantHome() {
           {nextStar ? (
             <Button onClick={() => collectStar(participantId, nextStar?.id!)} disabled={jarFull} className="nextStarButton">
               <Stack className="nextStar">
-              <img src={starSvg} height={40} alt="star"/>
+              <img src={starSvg} alt="star"/>
               {nextStar.label}
               </Stack>
             </Button>
           ) : "Done for now!"}
         </div>
         <ButtonBase disabled={!jarFull} onClick={() => collectJar(participantId, selectedJar)}>
-        <div className="jarContainer" style={{height: '240px', width: '143.14px'}}>
+        <div className="jarContainer">
           <div className="jarFill" style={{height: `${jarFill}%`, backgroundColor: selectedJar.color}}></div>
-          <img className="jarImg" src={jarSvg} height={240} alt={`${selectedJar.name} jar`}/>
+          <img className="jarImg" src={jarSvg} alt={`${selectedJar.name} jar`}/>
           { jarFull ? 
             <div className="collectJar">
               <span>Jar is full!</span>
@@ -66,7 +66,8 @@ export function ParticipantHome() {
         </div>
         </ButtonBase>
       </Stack>
-      <BottomNavigation showLabels value={selectedJar} onChange={(_e, newValue) => setSelectedJar(newValue)}>
+      <BottomNavigation showLabels value={selectedJar} onChange={(_e, newValue) => setSelectedJar(newValue)}
+                        sx={{mt: 2}}>
         {participant.jarTypes.map(jarType => (
           <BottomNavigationAction key={jarType.id} value={jarType} label={jarType.name} icon={
             <Badge color="primary" badgeContent={getJarStats(participantId, jarType.id).uncollected}>

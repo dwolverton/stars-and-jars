@@ -7,8 +7,10 @@ https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2
 * lock jar collection
 * See jars & prizes
 * jar outline
-* show jar type & date on admin, and whether collected
+* show date on admin
+* flex jar size
 * choose date for star
+* animations
 * rainbow color
 
 

@@ -8,6 +8,7 @@ export interface Participant {
   id: string;
   name: string;
   jarTypes: JarType[];
+  jarTypesById: { [id:number]: JarType }
   labels: Label[];
 }
 
@@ -33,7 +34,8 @@ export const BLANK_PARTICIPANT: Participant = {
   id: "",
   name: "",
   labels: [],
-  jarTypes: []
+  jarTypes: [],
+  jarTypesById: {}
 }
 
 export const BLANK_JAR_TYPE: JarType = {

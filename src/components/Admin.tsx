@@ -1,7 +1,8 @@
 import { IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from '@mui/material'
 import React, { useState } from 'react'
 import { useAccountContext } from '../context/AccountContext'
-import StarIcon from '@mui/icons-material/StarBorder';
+import StarUncollectedIcon from '@mui/icons-material/StarBorder';
+import StarCollectedIcon from '@mui/icons-material/StarSharp';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -34,7 +35,9 @@ export default function Admin() {
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListSubheader>
-            {getStarsAndJars(participant.id).recentStars.map(star => (
+            {getStarsAndJars(participant.id).recentStars.map(star => {
+              const jarType = participant.jarTypesById[star.jarType];
+              return (
               <ListItem key={star.id} secondaryAction={
                 <IconButton edge="end" aria-label="delete"
                             onClick={() => removeStar(participant.id, star.id!)}>
@@ -42,11 +45,12 @@ export default function Admin() {
                 </IconButton>
               }>
                 <ListItemIcon>
-                  <StarIcon />
+                  {star.collected ? <StarCollectedIcon /> : <StarUncollectedIcon />}
                 </ListItemIcon>
-                <ListItemText primary={star.label} />
+                <ListItemText primary={star.label} secondary={<>
+                  <span style={{color: jarType.color}}>⬤</span> {jarType.name}</>}/>
               </ListItem>
-            ))}
+            )})}
           </React.Fragment>
         ))}
       </List>

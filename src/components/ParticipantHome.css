@@ -1,8 +1,36 @@
+/* == Star == */
+.nextStarContainer {
+  height: 118px;
+  font-family: 'Dancing Script', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nextStar {
+  color: black;
+  text-transform: none;
+  font-family: 'Dancing Script', Roboto, sans-serif;
+  font-size: 26px;
+}
+
+.nextStar img {
+  height: 60px;
+}
+
+.nextStarButton:not([disabled]) {
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+/* == Jar == */
 .jarContainer {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 300px;
+  width: 178.92px;
 }
 
 .jarFill {
@@ -17,11 +45,12 @@
 
 .jarImg {
   position: absolute;
+  height: 100%;
 }
 
 .jarStats {
-  width: 70px;
-  height: 70px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -34,13 +63,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: bold;
-  font-size: 18px;
+  font-size: 26px;
   font-family: 'Dancing Script', Roboto, sans-serif;
 }
 
 .collectJar {
-  width: 110px;
-  height: 110px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -53,35 +82,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: bold;
-  font-size: 18px;
+  font-size: 21px;
   font-family: 'Dancing Script', Roboto, sans-serif;
 
   animation: pulse-centered 2s infinite;
 }
 
 .jarStats-collected {
-  font-size: 22px;
-}
-
-.nextStarContainer {
-  height: 88px;
-  font-family: 'Dancing Script', Roboto, sans-serif;
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.nextStar {
-  color: black;
-  text-transform: none;
-  font-family: 'Dancing Script', Roboto, sans-serif;
-  font-size: 20px;
-}
-
-.nextStarButton:not([disabled]) {
-  transform: scale(1);
-  animation: pulse 2s infinite;
+  font-size: 30px;
 }
 
 @keyframes pulse {

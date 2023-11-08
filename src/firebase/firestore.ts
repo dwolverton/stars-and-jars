@@ -22,7 +22,7 @@ export function starRef(accountId: string, participantId: string, starId: string
 }
 
 export function recentStarsRef(accountId: string, participantId: string) {
-  return query(starsRef(accountId, participantId), orderBy("createdAt", "desc"), limit(10));
+  return query(starsRef(accountId, participantId), orderBy("createdAt", "desc"), limit(5));
 }
 
 export function unjarredStarsRef(accountId: string, participantId: string) {

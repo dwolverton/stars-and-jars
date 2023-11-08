@@ -8,7 +8,7 @@ import Dialog from '@mui/material/Dialog';
 import StarIcon from '@mui/icons-material/StarBorder';
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
-import { Label, Participant } from '../model/Account';
+import { BLANK_PARTICIPANT, Label, Participant } from '../model/Account';
 import Star from '../model/Star';
 
 interface Props {
@@ -23,12 +23,7 @@ export interface NewStarInfo {
 }
 
 const BLANK_INFO: NewStarInfo = {
-  participant: {
-    id: "",
-    name: "",
-    labels: [],
-    jarTypes: []
-  },
+  participant: BLANK_PARTICIPANT,
   value: 1
 }
 

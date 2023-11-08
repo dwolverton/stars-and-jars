@@ -1,7 +1,7 @@
 import { getDocs } from "firebase/firestore";
 import { orderedParticipantsRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import Account, { BLANK_ACCOUNT } from "../model/Account";
+import Account, { BLANK_ACCOUNT, Participant } from "../model/Account";
 
 const accountId = import.meta.env.VITE_ACCOUNT_ID;
 
@@ -31,8 +31,12 @@ async function fetchAccountDetails() {
   const participantsSnapshot = await getDocs(orderedParticipantsRef(accountId));
   console.log(participantsSnapshot)
   participantsSnapshot.forEach(participantDoc => {
-    const participant = JSON.parse(participantDoc.data().data);
+    const participant = JSON.parse(participantDoc.data().data) as Participant;
     participant.id = participantDoc.id;
+    participant.jarTypesById = {};
+    for (const jarType of participant.jarTypes) {
+      participant.jarTypesById[jarType.id] = jarType;
+    }
     account.participants.push(participant);
     account.participantsById[participant.id] = participant;
   });
