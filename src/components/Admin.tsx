@@ -8,6 +8,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
 import AddStarDialog, { NewStarInfo } from './AddStarDialog';
+import { formatTimestamp } from '../util/date-utils';
 
 export default function Admin() {
   const { participants } = useAccountContext();
@@ -48,7 +49,9 @@ export default function Admin() {
                   {star.collected ? <StarCollectedIcon /> : <StarUncollectedIcon />}
                 </ListItemIcon>
                 <ListItemText primary={star.label} secondary={<>
-                  <span style={{color: jarType.color}}>⬤</span> {jarType.name}</>}/>
+                  <span style={{color: jarType.color}}>⬤</span> {jarType.name}
+                  &nbsp;🕑{formatTimestamp(star.createdAt)}
+                  </>}/>
               </ListItem>
             )})}
           </React.Fragment>
