@@ -46,7 +46,8 @@ export default function Admin() {
                 </IconButton>
               }>
                 <ListItemIcon>
-                  {star.collected ? <StarCollectedIcon /> : <StarUncollectedIcon />}
+                  {star.value < 0 ? <RemoveIcon/> :
+                  star.collected ? <StarCollectedIcon /> : <StarUncollectedIcon />}
                 </ListItemIcon>
                 <ListItemText primary={star.label} secondary={<>
                   <span style={{color: jarType.color}}>⬤</span> {jarType.name}

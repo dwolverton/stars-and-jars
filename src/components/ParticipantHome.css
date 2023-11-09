@@ -2,6 +2,7 @@
 .nextStarContainer {
   height: 118px;
   font-family: 'Dancing Script', Roboto, sans-serif;
+  font-size: 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;

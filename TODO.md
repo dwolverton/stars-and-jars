@@ -6,9 +6,10 @@ https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2
 ### Phase 2
 * lock jar collection
 * See jars & prizes
+* expand admin history
 * jar outline
 * flex jar size
-* choose date for star
+* ~~choose date for star~~
 * animations
 * rainbow color
 
