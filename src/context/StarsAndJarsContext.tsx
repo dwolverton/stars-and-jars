@@ -1,5 +1,5 @@
-import { onSnapshot, addDoc, deleteDoc, updateDoc, DocumentSnapshot, QuerySnapshot } from "firebase/firestore";
-import { recentStarsRef, starsRef, starRef, unjarredStarsRef, jarsRef } from "../firebase/firestore";
+import { onSnapshot, addDoc, deleteDoc, updateDoc, DocumentSnapshot, QuerySnapshot, serverTimestamp } from "firebase/firestore";
+import { recentStarsRef, starsRef, starRef, unjarredStarsRef, orderedJarsRef, jarRef } from "../firebase/firestore";
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import { useAccountContext } from "./AccountContext";
 import { repoCollectJar } from "../firebase/firebaseRepo";
@@ -43,8 +43,9 @@ interface ContextValue {
   getJarStats: (participantId: string, jarType: number) => ContextJarStats,
   addStar: (participantId: string, star: Star) => void,
   removeStar: (participantId: string, starId: string) => void,
-  collectStar: (participantId: string, starId: string) => void,
+  collectStar: (participantId?: string, starId?: string) => void,
   collectJar: (participantId: string, jarType: JarType) => Promise<void>
+  redeemJar: (participantId: string, jarId: string, prize: string) => void
 }
 const DEFAULT_CONTEXT: ContextValue = {
   getStarsAndJars: () => BLANK_PARTICIPANT,
@@ -52,7 +53,8 @@ const DEFAULT_CONTEXT: ContextValue = {
   addStar: () => {},
   removeStar: () => {},
   collectStar: () => {},
-  collectJar: () => Promise.resolve()
+  collectJar: () => Promise.resolve(),
+  redeemJar: () => {}
 }
 
 const StarsAndJarsContext = createContext(DEFAULT_CONTEXT);
@@ -67,7 +69,7 @@ export function StarsAndJarsContextProvider({children}: { children: ReactNode })
       const unsubscribers: (() => void)[] = [];
       for (const participant of account.participants) {
         newValue[participant.id] = BLANK_PARTICIPANT;
-        const set = (newValues: any) => {
+        const set = (newValues: object) => {
           setValue(prev => ({ ...prev, [participant.id]: { ...prev[participant.id], ...newValues}}));
         }
         unsubscribers.push(loadRecentStars(account.id, participant.id, set));
@@ -111,7 +113,7 @@ export function StarsAndJarsContextProvider({children}: { children: ReactNode })
     deleteDoc(starRef(account.id, participantId, starId));
   }, [account]);
 
-  const collectStar = useCallback(function collectStar(participantId: string, starId: string) {
+  const collectStar = useCallback(function collectStar(participantId?: string, starId?: string) {
     if (!account || !participantId || !starId) {
       return;
     }
@@ -125,6 +127,10 @@ export function StarsAndJarsContextProvider({children}: { children: ReactNode })
     return repoCollectJar(account.id, participantId, jarType, getStarsAndJars(participantId).unjarredStars);
   }, [account, getStarsAndJars]);
 
+  const redeemJar = useCallback(function redeemJar(participantId:string, jarId: string, prize: string) {
+    updateDoc(jarRef(account.id, participantId, jarId), { prize, redeemedAt: serverTimestamp()});
+  }, [account]);
+
   useMemo(() => console.log(value), [value]);
   return (
     <StarsAndJarsContext.Provider value={{
@@ -133,7 +139,8 @@ export function StarsAndJarsContextProvider({children}: { children: ReactNode })
       addStar,
       removeStar,
       collectStar,
-      collectJar
+      collectJar,
+      redeemJar
     }}>{children}</StarsAndJarsContext.Provider>
   );
 }
@@ -142,13 +149,13 @@ export const useStarsAndJarsContext = () => useContext(StarsAndJarsContext);
 
 export default StarsAndJarsContext;
 
-function loadRecentStars(accountId: string, participantId: string, set: (values: Object) => void) {
+function loadRecentStars(accountId: string, participantId: string, set: (values: object) => void) {
   return onSnapshot(recentStarsRef(accountId, participantId), (querySnapshot) => {
     set({ recentStars: docsToObjs(querySnapshot) });
   });
 }
 
-function loadUnjarredStars(accountId: string, participantId: string, jarTypes: JarType[], set: (values: Object) => void) {
+function loadUnjarredStars(accountId: string, participantId: string, jarTypes: JarType[], set: (values: object) => void) {
   return onSnapshot(unjarredStarsRef(accountId, participantId), (querySnapshot) => {
     const stars = docsToObjs(querySnapshot);
     const jarStats:{[jarTypeId:number]: ContextJarStats} = {};
@@ -178,8 +185,8 @@ function loadUnjarredStars(accountId: string, participantId: string, jarTypes: J
   });
 }
 
-function loadJars(accountId: string, participantId: string, set: (values: Object) => void) {
-  return onSnapshot(jarsRef(accountId, participantId), (querySnapshot) => {
+function loadJars(accountId: string, participantId: string, set: (values: object) => void) {
+  return onSnapshot(orderedJarsRef(accountId, participantId), (querySnapshot) => {
     const jars = docsToObjs(querySnapshot);
     const unredeemedJars = jars.filter(jar => !jar.redeemedAt);
     set({ jars, unredeemedJars });

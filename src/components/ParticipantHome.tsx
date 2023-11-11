@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAccountContext } from "../context/AccountContext";
 import { Badge, BottomNavigation, BottomNavigationAction, Button, ButtonBase, Stack } from "@mui/material";
 import jarSvg from "../assets/jar.svg";
@@ -40,7 +40,7 @@ export function ParticipantHome() {
       <Stack sx={{alignItems: 'center', mb: 1}}>
         <div className="nextStarContainer">
           {nextStar ? (
-            <Button onClick={() => collectStar(participantId, nextStar?.id!)} disabled={jarFull} className="nextStarButton">
+            <Button onClick={() => collectStar(participantId, nextStar?.id)} disabled={jarFull} className="nextStarButton">
               <Stack className="nextStar">
               <img src={starSvg} alt="star"/>
               {nextStar.label}
@@ -75,7 +75,7 @@ export function ParticipantHome() {
             </Badge>
           } />
         ))}
-        <BottomNavigationAction value="myJars" label="Prizes" icon={
+        <BottomNavigationAction label="Prizes" component={Link} to={`/home/${participantId}/prizes`} icon={
           <Badge color="primary" badgeContent={getStarsAndJars(participantId).unredeemedJars.length}>
             <TrophyIcon />
           </Badge>

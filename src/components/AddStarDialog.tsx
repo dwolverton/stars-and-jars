@@ -40,9 +40,8 @@ function AddStarDialog({ onClose, info, open }: Props) {
   };
 
   const handleListItemClick = (label: Label) => {
-    let createdAt = new Date();
+    const createdAt = new Date();
     createdAt.setDate(createdAt.getDate() + date);
-    console.log(createdAt);
     const star: Star = {
       label: label.text,
       jarType: label.jarType,
@@ -65,9 +64,9 @@ function AddStarDialog({ onClose, info, open }: Props) {
           return (
             <ListItem disableGutters key={label.text + label.jarType}>
               <ListItemButton dense onClick={() => handleListItemClick(label)}  >
-                  <ListItemIcon>
-                    <StarIcon />
-                  </ListItemIcon>
+                <ListItemIcon>
+                  <StarIcon />
+                </ListItemIcon>
                 <ListItemText primary={label.text} secondary={<>
                     <span style={{color: jarType.color}}>⬤</span> {jarType.name}</>
                 }/>

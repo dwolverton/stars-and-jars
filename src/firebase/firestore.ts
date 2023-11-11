@@ -32,3 +32,11 @@ export function unjarredStarsRef(accountId: string, participantId: string) {
 export function jarsRef(accountId: string, participantId: string) {
   return collection(db, "accounts", accountId, "participants", participantId, "jars");
 }
+
+export function orderedJarsRef(accountId: string, participantId: string) {
+  return query(jarsRef(accountId, participantId), orderBy("createdAt", "desc"));
+}
+
+export function jarRef(accountId: string, participantId: string, jarId: string) {
+  return doc(db, "accounts", accountId, "participants", participantId, "jars", jarId);
+}

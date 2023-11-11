@@ -4,6 +4,7 @@ import Admin from './components/Admin';
 import { useAccountContext } from './context/AccountContext';
 import { ParticipantHome } from './components/ParticipantHome';
 import { AppBar, Toolbar, Button, Container, Box } from '@mui/material';
+import Prizes from './components/Prizes';
 
 function App() {
   const account = useAccountContext();
@@ -22,6 +23,7 @@ function App() {
           <Box component="main" sx={{ p: 2 }}>
             <Routes>
               <Route path="/" element={<Admin />} />
+              <Route path="/home/:participantId/prizes" element={<Prizes/>} />
               <Route path="/home/:participantId" element={<ParticipantHome />} />
             </Routes>
           </Box>

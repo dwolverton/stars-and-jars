@@ -18,3 +18,18 @@ export function formatTimestamp(timestamp: Timestamp): string {
     sameElse: "DD/MM/YYYY", // Everything else ( 17/10/2025 )
   });
 }
+
+export function formatTimestampWithoutTime(timestamp: Timestamp): string {
+  if (!timestamp) {
+    return "";
+  }
+
+  return dayjs(timestamp.toMillis()).calendar(null, {
+    sameDay: "[Today]",
+    nextDay: "[Tomorrow]",
+    nextWeek: "dddd",
+    lastDay: "[Yesterday]",
+    lastWeek: "[Last] dddd",
+    sameElse: "D MMM YYYY",
+  });
+}
