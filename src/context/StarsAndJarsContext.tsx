@@ -44,7 +44,7 @@ interface ContextValue {
   addStar: (participantId: string, star: Star) => void,
   removeStar: (participantId: string, starId: string) => void,
   collectStar: (participantId?: string, starId?: string) => void,
-  collectJar: (participantId: string, jarType: JarType) => Promise<void>
+  collectJar: (participantId: string, jarType: JarType) => void,
   redeemJar: (participantId: string, jarId: string, prize: string) => void
 }
 const DEFAULT_CONTEXT: ContextValue = {
@@ -53,7 +53,7 @@ const DEFAULT_CONTEXT: ContextValue = {
   addStar: () => {},
   removeStar: () => {},
   collectStar: () => {},
-  collectJar: () => Promise.resolve(),
+  collectJar: () => {},
   redeemJar: () => {}
 }
 
@@ -62,7 +62,7 @@ const StarsAndJarsContext = createContext(DEFAULT_CONTEXT);
 export function StarsAndJarsContextProvider({children}: { children: ReactNode }) {
   const [value, setValue] = useState(INITIAL_VALUE);
   const account = useAccountContext();
-  useEffect(() => {
+    useEffect(() => {
     setValue(INITIAL_VALUE);
     if (account.participants.length !== 0) {
       const newValue: StateValue = {};
@@ -122,9 +122,9 @@ export function StarsAndJarsContextProvider({children}: { children: ReactNode })
 
   const collectJar = useCallback(function collectStar(participantId: string, jarType: JarType) {
     if (!account) {
-      return Promise.resolve();
+      return;
     }
-    return repoCollectJar(account.id, participantId, jarType, getStarsAndJars(participantId).unjarredStars);
+    repoCollectJar(account.id, participantId, jarType, getStarsAndJars(participantId).unjarredStars);
   }, [account, getStarsAndJars]);
 
   const redeemJar = useCallback(function redeemJar(participantId:string, jarId: string, prize: string) {
