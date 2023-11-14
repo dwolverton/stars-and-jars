@@ -41,7 +41,10 @@ function AddStarDialog({ onClose, info, open }: Props) {
 
   const handleListItemClick = (label: Label) => {
     const createdAt = new Date();
-    createdAt.setDate(createdAt.getDate() + date);
+    if ( date !== 0) {
+      createdAt.setDate(createdAt.getDate() + date);
+      createdAt.setHours(23, 59, 0, 0);
+    }
     const star: Star = {
       label: label.text,
       jarType: label.jarType,
