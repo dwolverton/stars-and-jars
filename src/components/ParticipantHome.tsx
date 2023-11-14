@@ -14,6 +14,7 @@ export function ParticipantHome() {
   const account = useAccountContext();
   const { getStarsAndJars, getJarStats, collectStar, collectJar } = useStarsAndJarsContext();
   const [ selectedJar, setSelectedJar ] = useState<JarType>(BLANK_JAR_TYPE);
+  const [ starTransitioning, setStarTransitioning ] = useState(false);
 
   const { participantId = "" } = useParams();
   const participant = account.participantsById[participantId];
@@ -34,13 +35,23 @@ export function ParticipantHome() {
   if (jarStats.uncollected !== 0) {
     nextStar = getStarsAndJars(participantId).unjarredStars.find(star => star.jarType === selectedJar.id && !star.collected) ?? null;
   }
+
+  function handleCollectStar() {
+    setStarTransitioning(true);
+    collectStar(participantId, nextStar?.id);
+    setTimeout(() => {
+      setStarTransitioning(false);
+    }, 500);
+  }
   
   return (
     <div className="ParticipantHome">
       <Stack sx={{alignItems: 'center', mb: 1}}>
         <div className="nextStarContainer">
-          {nextStar ? (
-            <Button onClick={() => collectStar(participantId, nextStar?.id)} disabled={jarFull} className="nextStarButton">
+          { starTransitioning ?
+              <img src={starSvg} alt="new star" className="fallingStar" /> :
+          nextStar ? (
+            <Button onClick={handleCollectStar} disabled={jarFull} className="nextStarButton">
               <Stack className="nextStar">
               <img src={starSvg} alt="star"/>
               {nextStar.label}

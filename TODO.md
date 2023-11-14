@@ -8,7 +8,7 @@ https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2
 * ~~See jars & prizes~~
 * expand admin history
 * see stars in background
-* star animations
+* ~~star animations~~
 * jar outline
 * flex jar size
 * ~~choose date for star~~
