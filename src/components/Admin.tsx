@@ -6,17 +6,29 @@ import StarCollectedIcon from '@mui/icons-material/StarSharp';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { useStarsAndJarsContext } from '../context/StarsAndJarsContext';
 import AddStarDialog, { NewStarInfo } from './AddStarDialog';
 import { formatTimestamp } from '../util/date-utils';
+import Star from '../model/Star';
 
 export default function Admin() {
   const { participants } = useAccountContext();
   const { getStarsAndJars, removeStar } = useStarsAndJarsContext();
   const [ newStarInfo, setNewStarInfo ] = useState<NewStarInfo|null>(null);
+  const [ expanded, setExpanded ] = useState(false);
 
   function closeAddStarDialog() {
     setNewStarInfo(null);
+  }
+
+  function getRecentStars(participantId: string): Star[] {
+    let stars = getStarsAndJars(participantId).recentStars;
+    if (!expanded && stars.length > 5) {
+      stars = stars.slice(0, 5);
+    }
+    return stars;
   }
 
   return (
@@ -26,17 +38,28 @@ export default function Admin() {
           <React.Fragment key={participant.id}>
             <ListSubheader>{participant.name}
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete"
+                  { expanded ? 
+                    <IconButton edge="end" aria-label="show more"
+                                onClick={() => setExpanded(false)}>
+                      <ExpandLessIcon />
+                    </IconButton> :
+                    
+                    <IconButton edge="end" aria-label="show more"
+                                onClick={() => setExpanded(true)}>
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  }
+                  <IconButton edge="end" aria-label="delete" sx={{ml: 2}}
                               onClick={() => setNewStarInfo({participant, value: -1})}>
                     <RemoveIcon />
                   </IconButton>
-                  <IconButton edge="end" aria-label="add" sx={{ml: 1}}
+                  <IconButton edge="end" aria-label="add" sx={{ml: 2}}
                               onClick={() => setNewStarInfo({participant, value: 1})}>
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListSubheader>
-            {getStarsAndJars(participant.id).recentStars.map(star => {
+            {getRecentStars(participant.id).map(star => {
               const jarType = participant.jarTypesById[star.jarType];
               return (
               <ListItem key={star.id} secondaryAction={

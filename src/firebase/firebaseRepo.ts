@@ -33,11 +33,11 @@ export async function repoCollectJar(accountId: string, participantId: string, j
   const jar = doc(jarsRef(accountId, participantId)); // create jar ID
   try {
     await runTransaction(db, async (transaction) => {
-      let starPromises = [];
+      const starPromises = [];
       for (const star of starsForThisJar) {
         starPromises.push(transaction.get(starRef(accountId, participantId, star.id!)));
       }
-      let starDocs = await Promise.all(starPromises);
+      const starDocs = await Promise.all(starPromises);
       for (const star of starDocs) {
         if (!star || star.data()!.jar !== null) {
           throw "star already used";

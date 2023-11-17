@@ -6,7 +6,7 @@ https://console.firebase.google.com/u/0/project/stars-and-jars/firestore/data/~2
 ### Phase 2
 * ~~lock jar collection~~
 * ~~See jars & prizes~~
-* expand admin history
+* ~~expand admin history~~
 * ~~see stars in background~~
 * ~~star animations~~
 * jar outline
