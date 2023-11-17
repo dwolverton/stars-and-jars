@@ -32,8 +32,13 @@ export function ParticipantHome() {
   const jarFull = (jarStats && selectedJar.size) ? jarStats.collected >= selectedJar.size : false;
 
   let nextStar: Star|null = null;
+  let nextStars: Star[] = [];
   if (jarStats.uncollected !== 0) {
-    nextStar = getStarsAndJars(participantId).unjarredStars.find(star => star.jarType === selectedJar.id && !star.collected) ?? null;
+    nextStars = getStarsAndJars(participantId).unjarredStars.filter(star => star.jarType === selectedJar.id && !star.collected);
+    nextStar = nextStars.shift() ?? null;
+    if (nextStars.length > 5) {
+      nextStars = nextStars.slice(0, 5);
+    }
   }
 
   function handleCollectStar() {
@@ -58,23 +63,30 @@ export function ParticipantHome() {
               </Stack>
             </Button>
           ) : "Done for now!"}
+          <div className="nextStarsContainer">
+            { nextStars.map(star => {
+              return (
+                <img key={star.id!} src={starSvg} alt="star"/>
+              )
+            })}
+          </div>
         </div>
-        <ButtonBase disabled={!jarFull} onClick={() => collectJar(participantId, selectedJar)}>
-        <div className="jarContainer">
-          <div className="jarFill" style={{height: `${jarFill}%`, backgroundColor: selectedJar.color}}></div>
-          <img className="jarImg" src={jarSvg} alt={`${selectedJar.name} jar`}/>
-          { jarFull ? 
-            <div className="collectJar">
-              <span>Jar is full!</span>
-              <span>Tap to collect!</span>
-            </div>
-            :
-            <div className="jarStats">
-              <span className="jarStats-collected">{jarStats.collected}</span>
-              <span>of {selectedJar.size}</span>
-            </div>
-          }
-        </div>
+        <ButtonBase disabled={!jarFull} onClick={() => collectJar(participantId, selectedJar)} className="collectJarButton">
+          <div className="jarContainer">
+            <div className="jarFill" style={{height: `${jarFill}%`, backgroundColor: selectedJar.color}}></div>
+            <img className="jarImg" src={jarSvg} alt={`${selectedJar.name} jar`}/>
+            { jarFull ? 
+              <div className="collectJar">
+                <span>Jar is full!</span>
+                <span>Tap to collect!</span>
+              </div>
+              :
+              <div className="jarStats">
+                <span className="jarStats-collected">{jarStats.collected}</span>
+                <span>of {selectedJar.size}</span>
+              </div>
+            }
+          </div>
         </ButtonBase>
       </Stack>
       <BottomNavigation showLabels value={selectedJar} onChange={(_e, newValue) => setSelectedJar(newValue)}
