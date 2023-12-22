@@ -28,7 +28,7 @@ export function ParticipantHome() {
   }
 
   const jarStats = getJarStats(participantId, selectedJar.id)
-  const jarFill = (jarStats && jarStats.collected > 0) ? jarStats.collected / selectedJar.size * 100 : 0;
+  const jarFill = (jarStats && jarStats.collected > 0) ? Math.min(jarStats.collected / selectedJar.size * 100, 100) : 0;
   const jarFull = (jarStats && selectedJar.size) ? jarStats.collected >= selectedJar.size : false;
 
   let nextStar: Star|null = null;

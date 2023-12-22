@@ -2,13 +2,13 @@
   {
     "name": "Reniah",
     "jarTypes": [
-      { "id": 1, "name": "General", "color": "hotpink", "size": 30 },
+      { "id": 1, "name": "General", "color": "hotpink", "size": 15 },
       { "id": 2, "name": "Sleep", "color": "deepskyblue", "size": 10 }
     ],
     "labels": [
       { "text": "Morning", "jarType": 1 },
       { "text": "Homework", "jarType": 1 },
-      { "text": "Prayer time", "jarType": 1 },
+      { "text": "Dinner", "jarType": 1 },
       { "text": "Bedtime", "jarType": 1 },
       { "text": "Sleep", "jarType": 2 }
     ]
@@ -16,13 +16,13 @@
   {
     "name": "Ziyar",
     "jarTypes": [
-      { "id": 1, "name": "General", "color": "hotpink", "size": 30 },
-      { "id": 2, "name": "Sleep", "color": "deepskyblue", "size": 10 }
+      { "id": 1, "name": "General", "color": "#ff9e22", "size": 15 },
+      { "id": 2, "name": "Sleep", "color": "#61d800", "size": 10 }
     ],
     "labels": [
       { "text": "Morning", "jarType": 1 },
       { "text": "Homework", "jarType": 1 },
-      { "text": "Prayer time", "jarType": 1 },
+      { "text": "Dinner", "jarType": 1 },
       { "text": "Bedtime", "jarType": 1 },
       { "text": "Sleep", "jarType": 2 }
     ]
