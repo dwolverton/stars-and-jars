@@ -17,6 +17,7 @@ export interface JarType {
   name: string;
   color: string;
   size: number;
+  enabled: boolean;
 }
 
 export interface Label {
@@ -42,5 +43,6 @@ export const BLANK_JAR_TYPE: JarType = {
   id: 0,
   name: "",
   color: "",
-  size: 0
+  size: 0,
+  enabled: true
 }

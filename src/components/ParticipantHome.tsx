@@ -41,6 +41,8 @@ export function ParticipantHome() {
     }
   }
 
+  const navigationJars = participant.jarTypes.filter(jarType => jarType.enabled);
+
   function handleCollectStar() {
     setStarTransitioning(true);
     collectStar(participantId, nextStar?.id);
@@ -91,7 +93,7 @@ export function ParticipantHome() {
       </Stack>
       <BottomNavigation showLabels value={selectedJar} onChange={(_e, newValue) => setSelectedJar(newValue)}
                         sx={{mt: 2}}>
-        {participant.jarTypes.map(jarType => (
+        {navigationJars.map(jarType => (
           <BottomNavigationAction key={jarType.id} value={jarType} label={jarType.name} icon={
             <Badge color="primary" badgeContent={getJarStats(participantId, jarType.id).uncollected}>
               <img src={jarSvg} height={24} alt="jar" style={{backgroundColor: jarType.color}}/>
