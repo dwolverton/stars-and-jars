@@ -71,12 +71,15 @@ function AddStarDialog({ onClose, info, open }: Props) {
       createdAt.setDate(createdAt.getDate() + date);
       createdAt.setHours(23, 59, 0, 0);
     }
+    if (value > 1 || value < -1) {
+      label += ` ${value}`;
+    }
     const star: Star = {
       label,
       jarType,
       value,
       jar: null,
-      collected: value <= 0,
+      collected: false,
       createdAt: Timestamp.fromDate(createdAt)
     }
     addStar(participant.id, star);

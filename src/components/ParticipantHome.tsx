@@ -3,6 +3,7 @@ import { useAccountContext } from "../context/AccountContext";
 import { Badge, BottomNavigation, BottomNavigationAction, Button, ButtonBase, Stack } from "@mui/material";
 import jarSvg from "../assets/jar.svg";
 import starSvg from "../assets/star.svg";
+import starInvertedSvg from "../assets/star-inverted.svg";
 import { useEffect, useState } from "react";
 import "./ParticipantHome.css";
 import { useStarsAndJarsContext } from "../context/StarsAndJarsContext";
@@ -31,17 +32,17 @@ export function ParticipantHome() {
   const jarFill = (jarStats && jarStats.collected > 0) ? Math.min(jarStats.collected / selectedJar.size * 100, 100) : 0;
   const jarFull = (jarStats && selectedJar.size) ? jarStats.collected >= selectedJar.size : false;
 
-  let nextStar: Star|null = null;
-  let nextStars: Star[] = [];
-  if (jarStats.uncollected !== 0) {
-    nextStars = getStarsAndJars(participantId).unjarredStars.filter(star => star.jarType === selectedJar.id && !star.collected);
-    nextStar = nextStars.shift() ?? null;
-    if (nextStars.length > 5) {
-      nextStars = nextStars.slice(0, 5);
-    }
+  let nextStars = getStarsAndJars(participantId).unjarredStars.filter(star => star.jarType === selectedJar.id && !star.collected);
+  const nextStar = nextStars.shift() ?? null;
+  if (nextStars.length > 5) {
+    nextStars = nextStars.slice(0, 5);
   }
 
   const navigationJars = participant.jarTypes.filter(jarType => jarType.enabled);
+
+  function getStarImage(star: Star) {
+    return star.value > 0 ? starSvg : starInvertedSvg;
+  }
 
   function handleCollectStar() {
     setStarTransitioning(true);
@@ -60,7 +61,7 @@ export function ParticipantHome() {
           nextStar ? (
             <Button onClick={handleCollectStar} disabled={jarFull} className="nextStarButton">
               <Stack className="nextStar">
-              <img src={starSvg} alt="star"/>
+              <img src={getStarImage(nextStar)} alt="star"/>
               {nextStar.label}
               </Stack>
             </Button>
@@ -68,7 +69,7 @@ export function ParticipantHome() {
           <div className="nextStarsContainer">
             { nextStars.map(star => {
               return (
-                <img key={star.id!} src={starSvg} alt="star"/>
+                <img key={star.id!} src={getStarImage(star)} alt="star"/>
               )
             })}
           </div>
