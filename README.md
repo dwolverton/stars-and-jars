@@ -3,13 +3,16 @@ This is an app I quickly made for my children to track rewards. They collect sta
 
 Here are some screenshots:
 
-The parent adds or removes stars
+The parent adds or removes stars.
+
 ![Admin Screenshot](screenshots/admin-screenshot.png)
 
 The child clicks the star to collect and fill the jar.
+
 ![Collecting Stars Screenshot](screenshots/stars-screenshot.png)
 
 When the jar is full, the child clicks to add it to their prizes.
+
 ![Collecting a Jar Screenshot](screenshots/jar-screenshot.png)
 
 ## Installation
