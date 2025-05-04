@@ -3,24 +3,8 @@
     "name": "Reniah",
     "jarTypes": [
       { "id": 1, "name": "General", "color": "hotpink", "size": 15, "enabled": true },
-      { "id": 2, "name": "Shop", "color": "deepskyblue", "size": 15, "enabled": false }
-    ],
-    "labels": [
-      { "text": "Morning", "jarType": 1 },
-      { "text": "Helpful", "jarType": 1 },
-      { "text": "Homework", "jarType": 1 },
-      { "text": "Screen respect", "jarType": 1 },
-      { "text": "Dinner", "jarType": 1 },
-      { "text": "Bath", "jarType": 1 },
-      { "text": "Bedtime", "jarType": 1 },
-      { "text": "Sleep", "jarType": 1 }
-    ]
-  },
-  {
-    "name": "Ziyar",
-    "jarTypes": [
-      { "id": 1, "name": "General", "color": "#6114EE", "size": 15, "enabled": true },
-      { "id": 2, "name": "Shop", "color": "deepskyblue", "size": 15, "enabled": false }
+      { "id": 2, "name": "Shop", "color": "deepskyblue", "size": 15, "enabled": false },
+      { "id": 3, "name": "Pop-Tart", "color": "tan", "size": 5, "enabled": true }
     ],
     "labels": [
       { "text": "Morning", "jarType": 1 },
@@ -30,7 +14,27 @@
       { "text": "Dinner", "jarType": 1 },
       { "text": "Bath", "jarType": 1 },
       { "text": "Bedtime", "jarType": 1 },
-      { "text": "Sleep", "jarType": 1 }
+      { "text": "Sleep", "jarType": 1 },
+      { "text": "School on Time", "jarType": 3 }
+    ]
+  },
+  {
+    "name": "Ziyar",
+    "jarTypes": [
+      { "id": 1, "name": "General", "color": "#6114EE", "size": 15, "enabled": true },
+      { "id": 2, "name": "Shop", "color": "deepskyblue", "size": 15, "enabled": false },
+      { "id": 3, "name": "Strudel", "color": "lightpink", "size": 5, "enabled": true }
+    ],
+    "labels": [
+      { "text": "Morning", "jarType": 1 },
+      { "text": "Helpful", "jarType": 1 },
+      { "text": "Reading", "jarType": 1 },
+      { "text": "Screen respect", "jarType": 1 },
+      { "text": "Dinner", "jarType": 1 },
+      { "text": "Bath", "jarType": 1 },
+      { "text": "Bedtime", "jarType": 1 },
+      { "text": "Sleep", "jarType": 1 },
+      { "text": "School on Time", "jarType": 3 }
     ]
   }
 ]

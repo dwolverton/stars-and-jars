@@ -78,7 +78,7 @@ export default function Prizes() {
               </ListItemIcon>
               <ListItemText primary={`Prize: ${jar.prize}`} secondary={<>
                 {jarType.name}
-                &nbsp;🕑{formatTimestampWithoutTime(jar.createdAt)}
+                &nbsp;🕑{formatTimestampWithoutTime(jar.redeemedAt!)}
                 </>}/>
             </ListItem>
           );
